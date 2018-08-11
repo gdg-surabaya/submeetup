@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gdgsbymeetup/list_attendees.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
 
 void main() => runApp(new MyApp());
 
@@ -33,6 +35,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  StreamSubscription<FirebaseUser> _listener;
+  FirebaseUser _currentUser;
+  @override
+  void initState() {
+    super.initState();
+    _checkCurrentUser();
+  }
+  @override
+  void dispose() {
+    _listener.cancel();
+    super.dispose();
+  }
+
+  void _checkCurrentUser() async {
+    _currentUser = await _auth.currentUser();
+    _currentUser?.getIdToken(refresh: true);
+
+    _listener = _auth.onAuthStateChanged.listen((FirebaseUser user) {
+      setState(() {
+        _currentUser = user;
+      });
+    });
+  }
+
+
   String barcode;
   List<dynamic> items;
   ListAttendees listAttendees=new ListAttendees( new List<dynamic>() );
@@ -85,34 +113,52 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
 
-
-    return DefaultTabController(
-      length: 2,
-      initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: new Text(widget.title),
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.insert_chart)),
-              Tab(icon: Icon(Icons.list)),
-            ],
+    if (_currentUser == null) {
+      return new SignInScreen(
+        title: "Surabaya Meetup",
+        header: new Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new Text("Surabaya Meetup"),
           ),
         ),
-        body:TabBarView(
-          children: [
-            new Text(""),
-            listAttendees,
-          ],
+        providers: [
+          ProvidersTypes.google,
+          ProvidersTypes.facebook,
+          ProvidersTypes.email
+        ],
+      );
+    } else {
+
+      return DefaultTabController(
+        length: 2,
+        initialIndex: 0,
+        child: Scaffold(
+          appBar: AppBar(
+            title: new Text(widget.title),
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.insert_chart)),
+                Tab(icon: Icon(Icons.list)),
+              ],
+            ),
+          ),
+          body:TabBarView(
+            children: [
+              new Text(""),
+              listAttendees,
+            ],
+          ),
+
+          floatingActionButton: new FloatingActionButton(
+            onPressed: scan,
+            tooltip: 'Scan Attendee QR Code',
+            child: new Icon(Icons.camera_enhance),
+          ), // This trailing comma makes auto-formatting nicer for build methods.
+
         ),
-
-        floatingActionButton: new FloatingActionButton(
-          onPressed: scan,
-          tooltip: 'Scan Attendee QR Code',
-          child: new Icon(Icons.camera_enhance),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-
-      ),
-    );
+      );
+    }
   }
 }

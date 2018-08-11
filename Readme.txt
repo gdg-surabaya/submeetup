@@ -24,6 +24,26 @@ import 'package:barcode_scan/barcode_scan.dart';
 
 
 
+Firebase UI Auth
+1. 
+https://pub.dartlang.org/packages/flutter_firebase_ui
+2.
+https://pub.dartlang.org/packages/firebase_auth
+3. change package name
+4. create android app in firebase
+5. download json
+6. create facebook app
+https://developers.facebook.com/apps
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+7. create strings.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">xyz</string>
+    <string name="fb_login_protocol_scheme">fbxyz</string>
+</resources>
+
+
 
 6. create list_attendees.dart
 pake List
