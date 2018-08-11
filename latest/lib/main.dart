@@ -7,6 +7,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
+import 'package:gdgsbymeetup/dashboard.dart';
 
 void main() => runApp(new MyApp());
 
@@ -63,7 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String barcode;
   List<dynamic> items;
+  Dashboard dashboard=new Dashboard();
   ListAttendees listAttendees=new ListAttendees( new List<dynamic>() );
+
+  void addOnTheSpot(){
+    
+  }
 
   Future<List<dynamic>> getData() async {
     var response;
@@ -136,6 +142,16 @@ class _MyHomePageState extends State<MyHomePage> {
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
+            actions: <Widget>[
+              new GestureDetector(
+                onTap: addOnTheSpot,
+                child: Container(
+                  margin: EdgeInsets.only(right:10.0),
+                  child:new Icon(Icons.add_box),
+                )
+              )
+              
+            ],
             title: new Text(widget.title),
             bottom: TabBar(
               tabs: [
@@ -146,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           body:TabBarView(
             children: [
-              new Text(""),
+              dashboard,
               listAttendees,
             ],
           ),
