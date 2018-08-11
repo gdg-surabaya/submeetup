@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gdgsbymeetup/list_attendees.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -53,7 +54,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
-
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() => this.barcode = barcode);
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          this.barcode = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this.barcode = 'Unknown error: $e');
+      }
+    } on FormatException{
+      setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => this.barcode = 'Unknown error: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     getData().then( (res){
@@ -88,6 +106,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
 
+        floatingActionButton: new FloatingActionButton(
+          onPressed: scan,
+          tooltip: 'Scan Attendee QR Code',
+          child: new Icon(Icons.camera_enhance),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
 
       ),
     );
