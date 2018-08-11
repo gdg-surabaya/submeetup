@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gdgsbymeetup/add_attendees.dart';
+import 'package:gdgsbymeetup/dashboard.dart';
 import 'package:gdgsbymeetup/list_attendees.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
-import 'package:gdgsbymeetup/dashboard.dart';
 
 void main() => runApp(new MyApp());
 
@@ -21,6 +22,17 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: new MyHomePage(title: 'Surabaya Meetup'),
+      onGenerateRoute: (RouteSettings settings){
+        if (settings.name == "addAttendees"){
+          return MaterialPageRoute(
+            builder: (context){
+              return new AddAttendees();
+            },
+          );
+        }else{
+          // new MyHomePage(title: 'Surabaya Meetup');
+        }
+      },
     );
   }
 }
@@ -39,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   StreamSubscription<FirebaseUser> _listener;
   FirebaseUser _currentUser;
+  BuildContext _ctx;
+
   @override
   void initState() {
     super.initState();
@@ -68,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ListAttendees listAttendees=new ListAttendees( new List<dynamic>() );
 
   void addOnTheSpot(){
-    
+    Navigator.pushNamed(_ctx,"addAttendees");
   }
 
   Future<List<dynamic>> getData() async {
@@ -108,6 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
+    this._ctx=context;
+    // print("build");
     getData().then( (res){
       if (res.length>0){
         if (items==null){

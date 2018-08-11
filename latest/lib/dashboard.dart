@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 class Dashboard extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -100,7 +101,7 @@ class Dashboard extends StatelessWidget{
           margin:EdgeInsets.only(left:10.0),
           alignment: Alignment.centerLeft,
           child:
-          new Text("Latest Registered Users",style: TextStyle(fontWeight:FontWeight.bold,fontSize:15.0),),
+          new Text("Latest Checked In Users",style: TextStyle(fontWeight:FontWeight.bold,fontSize:15.0),),
         ),
         
 
@@ -115,7 +116,7 @@ class Dashboard extends StatelessWidget{
             //     : null,
             itemBuilder: (BuildContext context, DataSnapshot snapshot,
                 Animation<double> animation, int index) {
-                  print("indez "+index.toString());
+                  // print("indez "+index.toString());
               return new SizeTransition(
                 sizeFactor: animation,
                 
