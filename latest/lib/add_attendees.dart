@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:gdgsbymeetup/config.dart';
+import 'package:gdgsbymeetup/utils.dart';
 
 class AddAttendees extends StatefulWidget{
   @override
@@ -100,7 +102,12 @@ class AddAttendeesState extends State<AddAttendees>{
                         "gender":gender,
                         "registrationTime": (DateTime.now().toUtc().millisecondsSinceEpoch)
                       };
-                      FirebaseDatabase().reference().child("onthespot").push().set(jso);
+                      DatabaseReference newDataRef=FirebaseDatabase().reference().child(node_check_in).push();
+                      String key=newDataRef.key;
+                      newDataRef.set(jso ).then( (status){
+                        alert(context,"Success","On the spot attendee has been saved successfully");
+                      });
+                      newDataRef.setPriority( -1* (DateTime.now().toUtc().millisecondsSinceEpoch));
                     }
                   },
                 )

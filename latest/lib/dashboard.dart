@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-
+import 'package:gdgsbymeetup/config.dart';
+import 'package:gdgsbymeetup/utils.dart';
 class Dashboard extends StatelessWidget{
 
   @override
@@ -32,12 +33,16 @@ class Dashboard extends StatelessWidget{
                   new Text("Registered",style: TextStyle(color: Colors.white,fontSize:18.0,fontWeight:FontWeight.bold)),
                   new Text(""),
                   StreamBuilder(
-                    stream: FirebaseDatabase().reference().child("reregistered").onValue,
+                    stream: FirebaseDatabase().reference().child(node_check_in).onValue,
                     builder: (BuildContext context, AsyncSnapshot<Event> snapshot){
                       // return new Text("asd");
+                      // alert(context,"test",snapshot.hasData.toString());
                       if (snapshot.hasData){
                         var map=(snapshot.data.snapshot.value) as Map<dynamic,dynamic>;                      
-                        return new Text( map.keys.length.toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                        if (map==null){
+                          return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                        }else
+                          return new Text( map.keys.length.toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
                       }else{
                         return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
                       }
@@ -68,12 +73,16 @@ class Dashboard extends StatelessWidget{
                   new Text("On The Spot",style: TextStyle(color: Colors.white,fontSize:18.0,fontWeight:FontWeight.bold)),
                   new Text(""),
                   StreamBuilder(
-                    stream: FirebaseDatabase().reference().child("onthespot").onValue,
+                    stream: FirebaseDatabase().reference().child(node_on_the_spot).onValue,
                     builder: (BuildContext context, AsyncSnapshot<Event> snapshot){
                       // return new Text("asd");
                       if (snapshot.hasData){
                         var map=(snapshot.data.snapshot.value) as Map<dynamic,dynamic>;                      
-                        return new Text( map.keys.length.toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                        if (map==null){
+                          return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                        }else
+                          return new Text( map.keys.length.toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                        
                       }else{
                         return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
                       }
@@ -108,8 +117,8 @@ class Dashboard extends StatelessWidget{
         new Flexible(
           child: new FirebaseAnimatedList(
             // key: new ValueKey<bool>(_anchorToBottom),
-            key: new ValueKey<bool>(false),
-            query: FirebaseDatabase().reference().child("reregistered").orderByChild("reregistrationTime"),
+            // key: new ValueKey<bool>(false),
+            query: FirebaseDatabase().reference().child(node_check_in).orderByChild(field_check_in_time),
             // reverse: _anchorToBottom,
             // sort: _anchorToBottom  
             //     ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)

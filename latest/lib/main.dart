@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gdgsbymeetup/add_attendees.dart';
+import 'package:gdgsbymeetup/config.dart';
 import 'package:gdgsbymeetup/dashboard.dart';
 import 'package:gdgsbymeetup/list_attendees.dart';
+import 'package:gdgsbymeetup/utils.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() => runApp(new MyApp());
 
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Surabaya Meetup',
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -102,22 +105,52 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
+
+ 
+
+
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
-      setState(() => this.barcode = barcode);
+      print( "barcode "+barcode );
+      print(field_hash);
+      FirebaseDatabase().reference().child(node_registered).orderByChild(field_hash).equalTo(barcode).once().then( (DataSnapshot ds){
+        // if (ds.value.)
+        print("ds "+ds.key);
+        print(ds.value);
+        if (ds.value!=null){
+          ds.value.forEach( (d,map){
+            // var map=ds.value[ds.key];
+            // print("map");
+            // print(map);
+            var json={
+              "email" : map["email"],
+              "name" : map["name"],
+              "hash" : map["hash"],
+              "check_in_time" : DateTime.now().millisecondsSinceEpoch,
+            };
+            DatabaseReference attendeeCheckInRef=FirebaseDatabase().reference().child(node_check_in).push();
+            attendeeCheckInRef.set(json);
+            attendeeCheckInRef.setPriority(-1 * (DateTime.now().millisecondsSinceEpoch)); 
+          });
+        }
+      });
+      // setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
-        });
+        alert(context,"Warning","Mohon setujui permission camera");
+        // setState(() {
+        //   this.barcode = 'The user did not grant the camera permission!';
+        // });
       } else {
-        setState(() => this.barcode = 'Unknown error: $e');
+        alert(context,"Warning","Unknown Error");
+        // setState(() => this.barcode = 'Unknown error: $e');
       }
     } on FormatException{
-      setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
+      alert(context,"Warning","User returned using the 'back'-button before scanning anything");
+      // setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
     } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
+      alert(context,"Warning","Unknown Error");
     }
   }
   @override
