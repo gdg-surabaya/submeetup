@@ -102,7 +102,7 @@ class AddAttendeesState extends State<AddAttendees>{
                         "gender":gender,
                         "registrationTime": (DateTime.now().toUtc().millisecondsSinceEpoch)
                       };
-                      DatabaseReference newDataRef=FirebaseDatabase().reference().child(node_check_in).push();
+                      DatabaseReference newDataRef=FirebaseDatabase().reference().child(node_on_the_spot).push();
                       String key=newDataRef.key;
                       newDataRef.set(jso ).then( (status){
                         alert(context,"Success","On the spot attendee has been saved successfully");

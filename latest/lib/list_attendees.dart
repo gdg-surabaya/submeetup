@@ -3,23 +3,25 @@
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 
-class ListAttendees extends StatefulWidget{
+// class ListAttendees extends StatefulWidget{
+//   List<dynamic> items;
+//   ListAttendees(this.items){
+
+//   }
+//   @override
+//   ListAttendeesState createState() {
+//     // TODO: implement createState
+//     return new ListAttendeesState(this.items);
+//   }
+
+// }
+
+
+// class ListAttendeesState extends State<ListAttendees>{
+class ListAttendees extends StatelessWidget{
   List<dynamic> items;
+  // ListAttendeesState(this.items){
   ListAttendees(this.items){
-
-  }
-  @override
-  ListAttendeesState createState() {
-    // TODO: implement createState
-    return new ListAttendeesState(this.items);
-  }
-
-}
-
-
-class ListAttendeesState extends State<ListAttendees>{
-  List<dynamic> items;
-  ListAttendeesState(this.items){
     print("this.items");
     print(this.items);
   }
