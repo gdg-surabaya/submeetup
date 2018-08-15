@@ -11,6 +11,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/../../../../PROJECT/US/FLUTTER/flutter/.pub-cache/hosted/pub.dartlang.org/barcode_scan-0.0.4/android" />
             <option value="$PROJECT_DIR$/../../../../PROJECT/US/FLUTTER/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.5.18/android" />
+            <option value="$PROJECT_DIR$/../../../../PROJECT/US/FLUTTER/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.2.5/android" />
+            <option value="$PROJECT_DIR$/../../../../PROJECT/US/FLUTTER/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database-1.0.2/android" />
             <option value="$PROJECT_DIR$/../../../../PROJECT/US/FLUTTER/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_login-1.1.1/android" />
             <option value="$PROJECT_DIR$/../../../../PROJECT/US/FLUTTER/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-3.0.4/android" />
           </set>

@@ -88,22 +88,22 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.pushNamed(_ctx,"addAttendees");
   }
 
-  Future<List<dynamic>> getData() async {
-    var response;
-    try{
-      response = await http.get(
-        Uri.encodeFull("https://jsonplaceholder.typicode.com/users"),
-        headers:{
-          "Accept": "application/json"
-        }
-      );
+  // Future<List<dynamic>> getData() async {
+  //   var response;
+  //   try{
+  //     response = await http.get(
+  //       Uri.encodeFull("https://jsonplaceholder.typicode.com/users"),
+  //       headers:{
+  //         "Accept": "application/json"
+  //       }
+  //     );
       
-      return JSON.decode(response.body);
-    }catch(ex) {
-      return new List<dynamic>();
-    }
+  //     return JSON.decode(response.body);
+  //   }catch(ex) {
+  //     return new List<dynamic>();
+  //   }
 
-  }
+  // }
 
 
  
@@ -157,16 +157,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     this._ctx=context;
     // print("build");
-    getData().then( (res){
-      if (res.length>0){
-        if (items==null){
-          setState( (){
-            items=res;
-            listAttendees= new ListAttendees(items);
-          });
-        }
-      }
-    });
+    // getData().then( (res){
+    //   if (res.length>0){
+    //     if (items==null){
+    //       setState( (){
+    //         items=res;
+    //         listAttendees= new ListAttendees(items);
+    //       });
+    //     }
+    //   }
+    // });
 
     if (_currentUser == null) {
       return new SignInScreen(
