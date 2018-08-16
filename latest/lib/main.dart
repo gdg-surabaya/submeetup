@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gdgsbymeetup/add_attendees.dart';
 import 'package:gdgsbymeetup/config.dart';
@@ -52,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   StreamSubscription<FirebaseUser> _listener;
   FirebaseUser _currentUser;
   BuildContext _ctx;
@@ -60,7 +62,40 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _checkCurrentUser();
-  }
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) {
+        // print("onMessage:");
+        // print(message["data"]);
+        // var msg=JSON.decode(message);
+        if (message["data"]!=null){
+          alert(context,"Push Message",message["data"]);
+        }
+      },
+      onLaunch: (Map<String, dynamic> message) {
+        print("onLaunch: $message");
+        alert(context,"Push Message",message);
+      },
+      onResume: (Map<String, dynamic> message) {
+        print("onResume: $message");
+        alert(context,"Push Message",message);
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      _firebaseMessaging.subscribeToTopic("fcmadmin");
+      // setState(() {
+      //   _homeScreenText = "Push Messaging token: $token";
+      // });
+      // print(_homeScreenText);
+    });
+  }  
   @override
   void dispose() {
     _listener.cancel();
