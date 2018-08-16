@@ -120,7 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
   ListAttendees listAttendees=new ListAttendees( new List<dynamic>() );
 
   void addOnTheSpot(){
-    Navigator.pushNamed(_ctx,"addAttendees");
+    Navigator.pushNamed(_ctx,"addAttendees").then((data){
+      // alert(context,"Notif","BACK ")
+    });
   }
 
   // Future<List<dynamic>> getData() async {
