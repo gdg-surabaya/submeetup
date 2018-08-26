@@ -30,19 +30,32 @@ class Dashboard extends StatelessWidget{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text("Registered",style: TextStyle(color: Colors.white,fontSize:18.0,fontWeight:FontWeight.bold)),
+                  new Text("Check In",style: TextStyle(color: Colors.white,fontSize:18.0,fontWeight:FontWeight.bold)),
                   new Text(""),
                   StreamBuilder(
                     stream: FirebaseDatabase().reference().child(node_check_in).onValue,
                     builder: (BuildContext context, AsyncSnapshot<Event> snapshot){
                       // return new Text("asd");
                       // alert(context,"test",snapshot.hasData.toString());
-                      if (snapshot.hasData){
-                        var map=(snapshot.data.snapshot.value) as Map<dynamic,dynamic>;                      
-                        if (map==null){
-                          return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
-                        }else
-                          return new Text( map.keys.length.toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                      if (snapshot.hasData && snapshot.data!=null){
+                        if ( (snapshot.data.snapshot.value) is List ){
+                          var map=(snapshot.data.snapshot.value) as List<dynamic>;
+                          print("mapyy "+(map.length-1).toString());
+                          // print(map);
+                          if (map==null){
+                            return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                          }else
+                            return new Text( (map.length-1).toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                        }else{
+                          var map=(snapshot.data.snapshot.value) as Map<dynamic,dynamic>;
+                          print("mapz ");
+                          print(map);
+                          if (map==null){
+                            return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                          }else
+                            return new Text( (map.keys.length).toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+
+                        }
                       }else{
                         return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
                       }

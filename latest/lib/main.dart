@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_firebase_ui/flutter_firebase_ui.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -144,7 +145,57 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
  
+  _confirmDialog(map){
+    print("confirm dialog");
+    String title="Confirmation";
+    List<Widget> widgets=new List<Widget>();
+    widgets.add(new Text("Id : "+map["id"].toString()) );
+    widgets.add(new Text("Nama : "+map["namaLengkap"].toString()) );
+    widgets.add(new Text("Gender : "+map["gender"].toString()) );
+    widgets.add(new Text("Pekerjaan : "+map["pekerjaan"].toString()) );
+    widgets.add(new Text("Company : "+map["perusahaaninstitusi"].toString()) );
 
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: new Text(title),
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: widgets
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text('Confirm'),
+              onPressed:(){
+
+                var json={
+                  "id":map["id"],
+                  "email" : map["emailAddress"],
+                  "name" : map["namaLengkap"],
+                  "hash" : map["hash"],
+                  "check_in_time" : DateTime.now().millisecondsSinceEpoch,
+                };
+                DatabaseReference attendeeCheckInRef=FirebaseDatabase().reference().child(node_check_in).child("checkin_"+map["id"].toString());
+                attendeeCheckInRef.set(json);
+                // attendeeCheckInRef.setPriority(-1 * (DateTime.now().millisecondsSinceEpoch)); 
+                Navigator.of(context).pop();
+              }
+            ),
+            new FlatButton(
+              child: new Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );    
+  }
 
   Future scan() async {
     try {
@@ -153,23 +204,33 @@ class _MyHomePageState extends State<MyHomePage> {
       print(field_hash);
       FirebaseDatabase().reference().child(node_registered).orderByChild(field_hash).equalTo(barcode).once().then( (DataSnapshot ds){
         // if (ds.value.)
-        print("ds "+ds.key);
-        print(ds.value);
+        // print("ds "+ds.key);
+        // print(ds.value);
         if (ds.value!=null){
-          ds.value.forEach( (d,map){
-            // var map=ds.value[ds.key];
-            // print("map");
-            // print(map);
-            var json={
-              "email" : map["email"],
-              "name" : map["name"],
-              "hash" : map["hash"],
-              "check_in_time" : DateTime.now().millisecondsSinceEpoch,
-            };
-            DatabaseReference attendeeCheckInRef=FirebaseDatabase().reference().child(node_check_in).push();
-            attendeeCheckInRef.set(json);
-            attendeeCheckInRef.setPriority(-1 * (DateTime.now().millisecondsSinceEpoch)); 
-          });
+          // ds.value.forEach( (d,map){
+          if (ds.value is List){
+            for (var i=0;i<ds.value.length;i++){
+              var map=ds.value[i];
+              // print(d);
+              // print(map);
+              if (map!=null){
+                _confirmDialog(map);
+              }
+            }
+          }else{
+            var hashmap=ds.value;
+            
+
+            var map=hashmap.values.first;
+            // print ("mapzzz");
+            // print (map);
+            if (map!=null){
+              _confirmDialog(map);
+            }            
+          }
+          // });//FOREACH
+        }else{
+          alert(context,"Error","QR Code not valid");
         }
       });
       // setState(() => this.barcode = barcode);

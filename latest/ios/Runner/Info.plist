@@ -57,5 +57,9 @@
 	<string>fluttersj</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string> camera use</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>photo use</string>
 </dict>
 </plist>
