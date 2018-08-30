@@ -40,12 +40,12 @@ class Dashboard extends StatelessWidget{
                       if (snapshot.hasData && snapshot.data!=null){
                         if ( (snapshot.data.snapshot.value) is List ){
                           var map=(snapshot.data.snapshot.value) as List<dynamic>;
-                          print("mapyy "+(map.length-1).toString());
+                          print("mapyy "+(map.length).toString());
                           // print(map);
                           if (map==null){
                             return new Text( "0" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
                           }else
-                            return new Text( (map.length-1).toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
+                            return new Text( (map.length).toString()+"" ,style: TextStyle(color: Colors.white,fontSize:25.0,fontWeight:FontWeight.bold));
                         }else{
                           var map=(snapshot.data.snapshot.value) as Map<dynamic,dynamic>;
                           print("mapz ");

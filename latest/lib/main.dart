@@ -214,7 +214,13 @@ class _MyHomePageState extends State<MyHomePage> {
               // print(d);
               // print(map);
               if (map!=null){
-                _confirmDialog(map);
+                FirebaseDatabase().reference().child(node_check_in+"/"+node_check_in+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
+                  if (snap!=null && snap.value!=null){
+                    alert(context,"Error","Already Signed in");
+                  }else{
+                    _confirmDialog(map);
+                  }
+                });
               }
             }
           }else{
@@ -225,7 +231,13 @@ class _MyHomePageState extends State<MyHomePage> {
             // print ("mapzzz");
             // print (map);
             if (map!=null){
-              _confirmDialog(map);
+              FirebaseDatabase().reference().child(node_check_in+"/"+node_check_in+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
+                if (snap!=null && snap.value!=null){
+                  alert(context,"Error","Already Signed in");
+                }else{
+                  _confirmDialog(map);
+                }
+              });
             }            
           }
           // });//FOREACH
