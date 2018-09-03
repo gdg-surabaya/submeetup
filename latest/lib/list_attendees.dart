@@ -19,45 +19,42 @@ import 'package:http/http.dart' as http;
 
 // }
 
-
 // class ListAttendeesState extends State<ListAttendees>{
 
-  
-class ListAttendees extends StatelessWidget{
+class ListAttendees extends StatelessWidget {
   List<dynamic> items;
+
   // ListAttendeesState(this.items){
-  ListAttendees(this.items){
+  ListAttendees(this.items) {
     print("this.items");
     print(this.items);
   }
+
   //why dont we initialize in here?
 
   Future<List<dynamic>> getData(BuildContext context) async {
     var response;
-    try{
+    try {
       response = await http.get(
-        Uri.encodeFull("https://jsonplaceholder.typicode.com/users"),
-        headers:{
-          "Accept": "application/json"
-        }
-      );
-      
-      return JSON.decode(response.body);
-    }catch(ex) {
+          Uri.encodeFull("https://jsonplaceholder.typicode.com/users"),
+          headers: {"Accept": "application/json"});
+
+      return json.decode(response.body);
+    } catch (ex) {
       return new List<dynamic>();
     }
-
   }
-  TextEditingController msgController=new TextEditingController();
+
+  TextEditingController msgController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    GlobalKey key=new GlobalKey();
+    GlobalKey key = new GlobalKey();
 
-    DatabaseReference chatRef=FirebaseDatabase().reference().child("chats");
+    DatabaseReference chatRef = FirebaseDatabase().reference().child("chats");
     return Column(
       children: <Widget>[
         new Row(
@@ -68,18 +65,21 @@ class ListAttendees extends StatelessWidget{
               ),
             ),
             RaisedButton(
-              child: new Text("Send"), onPressed: () {
-                _auth.currentUser().then((user){
-                  String msg=msgController.text;
-                  String mykey=chatRef.push().key;
-                  FirebaseDatabase().reference().child("users/"+user.uid).once().then( (snapshot){
-                    chatRef.child(mykey).set({
-                      'message':msg,
-                      'uid':user.uid,
-                      'username':"" 
-                    });
-                    chatRef.child(mykey).setPriority(-1 * (DateTime.now().millisecondsSinceEpoch)); 
-
+              child: new Text("Send"),
+              onPressed: () {
+                _auth.currentUser().then((user) {
+                  String msg = msgController.text;
+                  String mykey = chatRef.push().key;
+                  FirebaseDatabase()
+                      .reference()
+                      .child("users/" + user.uid)
+                      .once()
+                      .then((snapshot) {
+                    chatRef
+                        .child(mykey)
+                        .set({'message': msg, 'uid': user.uid, 'username': ""});
+                    chatRef.child(mykey).setPriority(
+                        -1 * (DateTime.now().millisecondsSinceEpoch));
                   });
                 });
               },
@@ -88,37 +88,42 @@ class ListAttendees extends StatelessWidget{
         ),
         new Flexible(
           child: new FirebaseAnimatedList(
-            key:key,
+            key: key,
             // key: new ValueKey<bool>(_anchorToBottom),
             // key: new ValueKey<bool>(false),
-            query: FirebaseDatabase().reference().child("chats").orderByPriority(),
+            query:
+                FirebaseDatabase().reference().child("chats").orderByPriority(),
             // reverse: _anchorToBottom,
-            // sort: _anchorToBottom  
+            // sort: _anchorToBottom
             //     ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)
             //     : null,
             itemBuilder: (BuildContext context, DataSnapshot snapshot,
                 Animation<double> animation, int index) {
-                  // print("indez "+index.toString());
+              // print("indez "+index.toString());
               return new SizeTransition(
-                sizeFactor: animation,
-                
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding:EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text(snapshot.value["uid"], style: TextStyle(fontSize:17.0,fontWeight:FontWeight.bold),),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child : new Text(snapshot.value["message"],textAlign: TextAlign.end,)
-                      ),
-                      new Divider()
-                      // new Text(snapshot.value["email"],textAlign: TextAlign.end,)                      
-                    ],
-                  ),
-                )
-              );
+                  sizeFactor: animation,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text(
+                          snapshot.value["uid"],
+                          style: TextStyle(
+                              fontSize: 17.0, fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: new Text(
+                              snapshot.value["message"],
+                              textAlign: TextAlign.end,
+                            )),
+                        new Divider()
+                        // new Text(snapshot.value["email"],textAlign: TextAlign.end,)
+                      ],
+                    ),
+                  ));
             },
           ),
         ),
@@ -144,7 +149,7 @@ class ListAttendees extends StatelessWidget{
     //                     new Container(
     //                       margin: EdgeInsets.all(5.0),
     //                       child: new Chip(
-                          
+
     //                         label: new Text(items[idx]["username"]),
     //                       ),
 
@@ -152,7 +157,7 @@ class ListAttendees extends StatelessWidget{
     //                     new Container(
     //                       margin: EdgeInsets.all(5.0),
     //                       child: new Chip(
-                          
+
     //                         label: new Text(items[idx]["email"]),
     //                       ),
 
@@ -160,7 +165,7 @@ class ListAttendees extends StatelessWidget{
     //                     new Container(
     //                       margin: EdgeInsets.all(5.0),
     //                       child: new Chip(
-                          
+
     //                         label: new Text(items[idx]["website"]),
     //                       ),
 
@@ -178,7 +183,5 @@ class ListAttendees extends StatelessWidget{
     //     }
     //   },
     // );
-
   }
-
 }
