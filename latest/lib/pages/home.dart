@@ -10,16 +10,9 @@ import '../list_attendees.dart';
 import './dashboard.dart';
 
 import 'package:flutter/services.dart';
-import '../firebase_ui/signin_screen.dart';
-import '../firebase_ui/utils.dart';
-
 import './signin_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
@@ -278,15 +271,31 @@ class _MyHomePageState extends State<MyHomePage> {
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
+            leading: new FlatButton(onPressed: (){
+              showDialog(context: context, builder: (_){
+                return new AlertDialog(
+                  title: new Text("Sign Out"),
+                  content: new Text("Are you sure to sign out?"),
+                  actions: <Widget>[
+                    new FlatButton(onPressed: () => Navigator.of(context).pop(), child: new Text("No")),
+                    new FlatButton(onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(builder: (_) => new MyHomePage()), (_) => false);
+                    }, child: new Text("Yes")),
+                  ],
+                );
+              });
+            }, child: new Icon(Icons.exit_to_app, color: Colors.white,)),
             actions: <Widget>[
               new GestureDetector(
-                  onTap: addOnTheSpot,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10.0),
-                    child: new Icon(Icons.add_box),
-                  ))
+                onTap: addOnTheSpot,
+                child: Container(
+                  margin: EdgeInsets.only(right: 8.0),
+                  child: new Icon(Icons.add_box),
+                ),
+              )
             ],
-            title: new Text(widget.title),
+            title: new Text("Surabaya Meetup"),
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.insert_chart)),
@@ -300,12 +309,11 @@ class _MyHomePageState extends State<MyHomePage> {
               listAttendees,
             ],
           ),
-
           floatingActionButton: new FloatingActionButton(
             onPressed: scan,
             tooltip: 'Scan Attendee QR Code',
             child: new Icon(Icons.camera_enhance),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
+          ),
         ),
       );
     }

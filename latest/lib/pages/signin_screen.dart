@@ -17,13 +17,13 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        elevation: 0.0,
-      ),
+//      appBar: new AppBar(
+//        title: new Text(widget.title),
+//        elevation: 0.0,
+//      ),
       body:
 //      new FirebaseEmailSignInButton(),
-      new SignInScreen(title: "Surabaya Meetup", providers: [ProvidersTypes.google, ProvidersTypes.facebook, ProvidersTypes.email],),
+      new SignInScreen(title: widget.title, providers: [ProvidersTypes.google, ProvidersTypes.facebook, ProvidersTypes.email],),
     );
   }
 }

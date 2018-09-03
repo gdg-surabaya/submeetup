@@ -10,10 +10,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Surabaya Meetup',
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Surabaya Meetup'),
+      home: new MyHomePage(),
       onGenerateRoute: (RouteSettings settings) {
         if (settings.name == "addAttendees") {
           return MaterialPageRoute(
