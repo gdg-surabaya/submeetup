@@ -271,17 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // });
 
     if (_currentUser == null) {
-//      return new SignInPage(
-//        title: "Surabaya Meetup",
-//      );
-      return new SignInScreen(
-        title: "Surabaya Meetup",
-        providers: [
-          ProvidersTypes.google,
-          ProvidersTypes.facebook,
-          ProvidersTypes.email
-        ],
-      );
+      return new SignInPage(title: "Surabaya Meetup");
     } else {
       return DefaultTabController(
         length: 2,

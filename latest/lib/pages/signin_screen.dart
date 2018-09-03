@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gdgsbymeetup/firebase_ui/signin_screen.dart';
+import 'package:gdgsbymeetup/firebase_ui/utils.dart';
+import 'package:gdgsbymeetup/pages/signins/email/email.dart';
 
 class SignInPage extends StatefulWidget {
   final String title;
@@ -16,8 +19,11 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       appBar: new AppBar(
         title: new Text(widget.title),
-        elevation: 4.0,
+        elevation: 0.0,
       ),
+      body:
+//      new FirebaseEmailSignInButton(),
+      new SignInScreen(title: "Surabaya Meetup", providers: [ProvidersTypes.google, ProvidersTypes.facebook, ProvidersTypes.email],),
     );
   }
 }
