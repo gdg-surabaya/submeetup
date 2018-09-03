@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "hash" : map["hash"],
                   "check_in_time" : DateTime.now().millisecondsSinceEpoch,
                 };
-                DatabaseReference attendeeCheckInRef=FirebaseDatabase().reference().child(node_check_in).child("checkin_"+map["id"].toString());
+                DatabaseReference attendeeCheckInRef=FirebaseDatabase().reference().child(nodeCheckIn).child("checkin_"+map["id"].toString());
                 attendeeCheckInRef.set(json);
                 // attendeeCheckInRef.setPriority(-1 * (DateTime.now().millisecondsSinceEpoch)); 
                 Navigator.of(context).pop();
@@ -201,8 +201,8 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       String barcode = await BarcodeScanner.scan();
       print( "barcode "+barcode );
-      print(field_hash);
-      FirebaseDatabase().reference().child(node_registered).orderByChild(field_hash).equalTo(barcode).once().then( (DataSnapshot ds){
+      print(fieldHash);
+      FirebaseDatabase().reference().child(nodeRegistered).orderByChild(fieldHash).equalTo(barcode).once().then( (DataSnapshot ds){
         // if (ds.value.)
         // print("ds "+ds.key);
         // print(ds.value);
@@ -214,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // print(d);
               // print(map);
               if (map!=null){
-                FirebaseDatabase().reference().child(node_check_in+"/"+node_check_in+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
+                FirebaseDatabase().reference().child(nodeCheckIn+"/"+nodeCheckIn+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
                   if (snap!=null && snap.value!=null){
                     alert(context,"Error","Already Signed in");
                   }else{
@@ -231,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // print ("mapzzz");
             // print (map);
             if (map!=null){
-              FirebaseDatabase().reference().child(node_check_in+"/"+node_check_in+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
+              FirebaseDatabase().reference().child(nodeCheckIn+"/"+nodeCheckIn+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
                 if (snap!=null && snap.value!=null){
                   alert(context,"Error","Already Signed in");
                 }else{
