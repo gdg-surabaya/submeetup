@@ -278,10 +278,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   content: new Text("Are you sure to sign out?"),
                   actions: <Widget>[
                     new FlatButton(onPressed: () => Navigator.of(context).pop(), child: new Text("No")),
-                    new FlatButton(onPressed: () async {
-                      await _auth.signOut();
-                      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(builder: (_) => new MyHomePage()), (_) => false);
-                    }, child: new Text("Yes")),
+                    new FlatButton(onPressed: () async => await _auth.signOut().then((_) => Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(builder: (_) => new MyHomePage()), (_) => false)), child: new Text("Yes")),
                   ],
                 );
               });
