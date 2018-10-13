@@ -33,7 +33,7 @@ class Dashboard extends StatelessWidget{
                   new Text("Check In",style: TextStyle(color: Colors.white,fontSize:18.0,fontWeight:FontWeight.bold)),
                   new Text(""),
                   StreamBuilder(
-                    stream: FirebaseDatabase().reference().child(node_check_in).onValue,
+                    stream: FirebaseDatabase().reference().child(nodeCheckIn).onValue,
                     builder: (BuildContext context, AsyncSnapshot<Event> snapshot){
                       // return new Text("asd");
                       // alert(context,"test",snapshot.hasData.toString());
@@ -86,7 +86,7 @@ class Dashboard extends StatelessWidget{
                   new Text("On The Spot",style: TextStyle(color: Colors.white,fontSize:18.0,fontWeight:FontWeight.bold)),
                   new Text(""),
                   StreamBuilder(
-                    stream: FirebaseDatabase().reference().child(node_on_the_spot).onValue,
+                    stream: FirebaseDatabase().reference().child(nodeOnTheSpot).onValue,
                     builder: (BuildContext context, AsyncSnapshot<Event> snapshot){
                       // return new Text("asd");
                       if (snapshot.hasData){
@@ -131,7 +131,7 @@ class Dashboard extends StatelessWidget{
           child: new FirebaseAnimatedList(
             // key: new ValueKey<bool>(_anchorToBottom),
             // key: new ValueKey<bool>(false),
-            query: FirebaseDatabase().reference().child(node_check_in).orderByChild(field_check_in_time),
+            query: FirebaseDatabase().reference().child(nodeCheckIn).orderByChild(fieldCheckInTime),
             // reverse: _anchorToBottom,
             // sort: _anchorToBottom  
             //     ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)
