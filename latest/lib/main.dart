@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Surabaya Meetup',
+      title: 'Hacktoberfest Surabaya 2018',   // menampilkan title
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Surabaya Meetup'),
+      home: new MyHomePage(title: 'Hacktoberfest Surabaya 2018'),
       onGenerateRoute: (RouteSettings settings){
         if (settings.name == "addAttendees"){
           return MaterialPageRoute(
@@ -176,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   "email" : map["emailAddress"],
                   "name" : map["namaLengkap"],
                   "hash" : map["hash"],
-                  "check_in_time" : DateTime.now().millisecondsSinceEpoch,
+                  "check_in_time" : DateTime.now().millisecondsSinceEpoch, 
                 };
                 DatabaseReference attendeeCheckInRef=FirebaseDatabase().reference().child(node_check_in).child("checkin_"+map["id"].toString());
                 attendeeCheckInRef.set(json);
@@ -200,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
-      print( "barcode "+barcode );
+      print( "barcode "+barcode );    //menampilkan barcode
       print(field_hash);
       FirebaseDatabase().reference().child(node_registered).orderByChild(field_hash).equalTo(barcode).once().then( (DataSnapshot ds){
         // if (ds.value.)
@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (map!=null){
                 FirebaseDatabase().reference().child(node_check_in+"/"+node_check_in+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
                   if (snap!=null && snap.value!=null){
-                    alert(context,"Error","Already Signed in");
+                    alert(context,"Error","Already Signed in");   // menunjukan bahwa anda sudah masuk sebelumnya
                   }else{
                     _confirmDialog(map);
                   }
@@ -233,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (map!=null){
               FirebaseDatabase().reference().child(node_check_in+"/"+node_check_in+"_"+map["id"].toString()).once().then( (DataSnapshot snap){
                 if (snap!=null && snap.value!=null){
-                  alert(context,"Error","Already Signed in");
+                  alert(context,"Error","Already Signed in");   // menunjukan bahwa anda sudah masuk sebelumnya
                 }else{
                   _confirmDialog(map);
                 }
@@ -242,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
           // });//FOREACH
         }else{
-          alert(context,"Error","QR Code not valid");
+          alert(context,"Error","QR Code not valid");   //menampilkan alert error
         }
       });
       // setState(() => this.barcode = barcode);
