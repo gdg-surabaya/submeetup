@@ -13,5 +13,8 @@ public class MainActivity extends FlutterActivity {
     FacebookSdk.sdkInitialize(getApplicationContext());
     AppEventsLogger.activateApp(this);    
     GeneratedPluginRegistrant.registerWith(this);
+
+
+
   }
 }
