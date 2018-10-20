@@ -1,0 +1,1 @@
+aplikasi ini ditulis menggunakan bahasa Dart 
